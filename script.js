@@ -125,7 +125,7 @@ $(document).ready(function () {
         },
       });
       if (i == 0) {
-        //player.addEventListener('onReady', playFirst);
+        player.addEventListener('onReady', playFirst);
       }
       players.push(player);
     }
@@ -133,6 +133,7 @@ $(document).ready(function () {
 });
 
 function playFirst(e) {
+  //console.log("playing first: "+$(e.target))
   e.target.playVideo();
   e.target.unMute();
   e.target.removeEventListener('onReady', playFirst);
