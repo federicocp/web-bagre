@@ -1,0 +1,174 @@
+/* --- Generic Styles --- */
+
+header {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  margin: 0 auto;
+}
+
+.header {
+  width: 100%;
+  background-color: #ffffff;
+  position: absolute;
+  z-index: 9999;
+}
+
+.image-logo {
+  height: 80px;
+  width: auto;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: 1em;
+}
+
+/* --- Hamburger Functionality --- */
+
+div.menu-link {
+  padding: 1em;
+  color: rgb(0, 0, 0);
+}
+
+/* When screen is small, center content and animate transitions. */
+nav[role='navigation'] {
+  clear: both;
+  overflow: hidden;
+  max-height: 0;
+  -webkit-transition: all 0.3s ease-out;
+  -moz-transition: all 0.3s ease-out;
+  -ms-transition: all 0.3s ease-out;
+  -o-transition: all 0.3s ease-out;
+  transition: all 0.3s ease-out;
+  width: 100%;
+  margin: 0px 0px 0px -50px;
+}
+
+/* Positioning when nav does appear in small screen mode */
+nav[role='navigation'].open {
+  max-height: 15em;
+  margin-bottom: 10px;
+  margin-top: 50px;
+}
+
+/* When in small screen, center the list */
+nav[role='navigation'] ul {
+  margin: 0 auto;
+  padding: 0;
+}
+
+nav[role='navigation'] li a {
+  display: block;
+  padding: 0.8em;
+  color: rgb(0, 0, 0);
+  text-decoration: none;
+  text-align: center;
+}
+
+/* Style for larger screens. Hide the menu button, and show the normal navigation menu. */
+/* Credit: https://codepen.io/bradfrost/pen/sHvaz */
+/*
+@media screen and (min-width: 35em) {
+  div.menu-link {
+    display: none;
+  }
+
+  nav[role='navigation'] {
+    max-height: none;
+    margin: 0px;
+  }
+
+  nav[role='navigation'] ul {
+    margin: 0 0 0 -0.25em;
+    border: 0;
+    text-align: right;
+  }
+
+  nav[role='navigation'] li {
+    display: inline-block;
+    margin: 0 0.25em;
+  }
+
+  nav[role='navigation'] li a {
+    border: 0;
+  }
+}
+*/
+/* --- Hamburger Appearance & Animation --- */
+/* Credit: https://codepen.io/mblode/pen/evjfn */
+
+$dark: #000;
+$light: #000;
+$color: #000;
+
+@mixin btn($left, $top) {
+  width: 30px;
+  top: $top;
+  left: $left;
+  transition-duration: 0.5s;
+}
+
+@mixin icon($height, $width) {
+  transition-duration: 0.5s;
+  position: absolute;
+  height: $height;
+  width: $width;
+  top: 20px;
+  background-color: $light;
+}
+
+@mixin icon-before($height, $width, $top) {
+  transition-duration: 0.5s;
+  position: absolute;
+  width: $width;
+  height: $height;
+  background-color: $light;
+  content: '';
+  top: $top;
+}
+
+@mixin icon-after($height, $width, $top) {
+  transition-duration: 0.5s;
+  position: absolute;
+  width: $width;
+  height: $height;
+  background-color: $light;
+  content: '';
+  top: $top;
+}
+
+div.menu-link {
+  @include btn(120px, 100px);
+
+  .icon {
+    @include icon(4px, 30px);
+
+    &:before {
+      @include icon-before(4px, 30px, -10px);
+    }
+
+    &:after {
+      @include icon-after(4px, 30px, 10px);
+    }
+  }
+
+  &.open {
+    .icon {
+      transition-duration: 0.5s;
+      background: transparent;
+
+      &:before {
+        transform: rotateZ(45deg) scaleX(1.25) translate(6.5px, 6.5px);
+      }
+
+      &:after {
+        transform: rotateZ(-45deg) scaleX(1.25) translate(6px, -6px);
+      }
+    }
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+}

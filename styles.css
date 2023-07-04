@@ -15,7 +15,7 @@ h1 {
   overflow: hidden;
 }
 
-#myVideo {
+.videoEmbed {
   position: absolute;
   right: 0;
   bottom: 0;
@@ -29,7 +29,28 @@ h1 {
   background-position: center center;
   background-size: contain;
   object-fit: cover; /*cover video background */
-  z-index: 3;
+  z-index: -999;
+}
+
+.hero_video,
+.section iframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100vw;
+  height: 56.25vw; /* 9/16*100 = 56.25 */
+  min-height: 100vh;
+  min-width: 177.77vh; /* 16/9*100 = 177.77 */
+  z-index: -999;
+}
+
+.hero iframe {
+  opacity: 0;
+}
+
+.hero iframe.loaded {
+  opacity: 1;
 }
 
 /* Layer with position absolute in order to have it over the video
