@@ -17,16 +17,13 @@ $(document).ready(function () {
 
   //create DOM
   var reels = reel.length;
-  var pp = $('#pagepiling');
-  pp
-    .append
-    //'<div class="section" id="cover"><h1>Lovely images for a lovely page</h1></div>'
-    ();
+  var fp = $('#fullpage');
   for (var i = 0; i < reels; i++) {
-    pp.append(
-      '<div class="section" id="section"' +
+    /*
+    fp.append(
+      '<div class="section" id="section' +
         i +
-        '>' +
+        '">' +
         '<div id="youtubeEmbed' +
         i +
         '" class="hero_video" data-video-id="' +
@@ -34,35 +31,122 @@ $(document).ready(function () {
         '">' +
         '</div>'
     );
+    */
+    fp.append('<div class="section">Seccion '+i+'</div>')
   }
 
-  //init PP
-  var lastSection = -1;
-  pp.pagepiling({
-    menu: null,
-    direction: 'vertical',
-    verticalCentered: true,
-    sectionsColor: [],
-    anchors: [],
+  // INIT FULLPAGE.JS
+
+  fp.fullpage({
+    // Navigation
+    //menu: '#menu',
+    //lockAnchors: false,
+    //anchors: ['firstPage', 'secondPage'],
+    navigation: false,
+    navigationPosition: 'right',
+    //navigationTooltips: ['firstSlide', 'secondSlide'],
+    showActiveTooltip: false,
+    slidesNavigation: false,
+    slidesNavPosition: 'bottom',
+
+    sectionsColor : ['#ccc', '#fff'],
+
+    // Scrolling
+    css3: true,
     scrollingSpeed: 700,
-    easing: 'swing',
+    autoScrolling: true,
+    fitToSection: true,
+    fitToSectionDelay: 600,
+    scrollBar: false,
+    easing: 'easeInOutCubic',
+    easingcss3: 'ease',
     loopBottom: false,
     loopTop: false,
-    css3: true,
-    navigation: {
-      textColor: '#fff',
-      bulletsColor: '#fff',
-      position: 'right',
-      tooltips: ['section1', 'section2', 'section3', 'section4'],
-    },
-    normalScrollElements: null,
-    normalScrollElementTouchThreshold: 5,
-    touchSensitivity: 5,
-    keyboardScrolling: true,
-    sectionSelector: '.section',
-    animateAnchor: true,
-    sectionsColor: ['#FF6655'],
+    loopHorizontal: true,
+    continuousVertical: false,
+    continuousHorizontal: false,
+    scrollHorizontally: false,
+    interlockedSlides: false,
+    dragAndMove: false,
+    offsetSections: false,
+    resetSliders: false,
+    fadingEffect: false,
+    normalScrollElements: '#element1, .element2',
+    scrollOverflow: true,
+    scrollOverflowMacStyle: false,
+    scrollOverflowReset: false,
+    touchSensitivity: 15,
+    bigSectionsDestination: null,
 
+    // Accessibility
+    keyboardScrolling: true,
+    animateAnchor: true,
+    recordHistory: true,
+
+    // Design
+    controlArrows: false,
+    controlArrowsHTML: [
+      '<div class="fp-arrow"></div>',
+      '<div class="fp-arrow"></div>',
+    ],
+    verticalCentered: true,
+    sectionsColor: ['#ccc', '#aaa','#fcd', '#h12',],
+    //paddingTop: '3em',
+    //paddingBottom: '10px',
+    //fixedElements: '#header, .footer',
+    responsiveWidth: 0,
+    responsiveHeight: 0,
+    responsiveSlides: false,
+    parallax: false,
+    parallaxOptions: { type: 'reveal', percentage: 62, property: 'translate' },
+    dropEffect: false,
+    dropEffectOptions: { speed: 2300, color: '#F82F4D', zIndex: 9999 },
+    waterEffect: false,
+    waterEffectOptions: { animateContent: true, animateOnMouseMove: true },
+    cards: false,
+    cardsOptions: { perspective: 100, fadeContent: true, fadeBackground: true },
+
+    // Custom selectors
+    sectionSelector: '.section',
+    slideSelector: '.slide',
+
+    lazyLoading: true,
+    observer: true,
+    credits: {
+      enabled: false,
+      label: ' ',
+      position: 'right',
+    },
+
+    // Events
+    beforeLeave: function (origin, destination, direction, trigger) {},
+    onLeave: function (origin, destination, direction, trigger) {},
+    afterLoad: function (origin, destination, direction, trigger) {},
+    afterRender: function () {},
+    afterResize: function (width, height) {},
+    afterReBuild: function () {},
+    afterResponsive: function (isResponsive) {},
+    afterSlideLoad: function (
+      section,
+      origin,
+      destination,
+      direction,
+      trigger
+    ) {},
+    onSlideLeave: function (
+      section,
+      origin,
+      destination,
+      direction,
+      trigger
+    ) {},
+    onScrollOverflow: function (section, slide, position, direction) {},
+  });
+
+  //init PP
+  /*
+  var lastSection = -1;
+  pp.pagepiling({
     //events
     onLeave: function (index, nextIndex, direction) {
       console.log(index + '/' + nextIndex);
@@ -80,10 +164,11 @@ $(document).ready(function () {
     },
     afterRender: function () {},
   });
+  */
 
   //CREATE VIDEOS
   var players = [];
-  onYouTubeIframeAPIReady = function () {
+  _onYouTubeIframeAPIReady = function () {
     var playerVars = {
       autoplay: 0, // Auto-play the video on load
       autohide: 1, // Hide video controls when playing
@@ -94,9 +179,9 @@ $(document).ready(function () {
       loop: 1, // Run the video in a loop
       fs: 0, // Hide the full screen button
       rel: 0,
-      enablejsapi: 1,
-      //start: startSeconds,
-      //end: endSeconds
+      enablejsapi: 0,
+      start: 300,
+      end: 350
     };
 
     for (var i = 0; i < reels; i++) {
@@ -110,7 +195,8 @@ $(document).ready(function () {
         events: {
           onReady: function (e) {
             //e.target.pauseVideo();
-            //e.target.seekTo(0);
+            e.target.seekTo(300);
+            e.target.mute()
           },
           onStateChange: function (e) {
             if (e.data === YT.PlayerState.PLAYING) {
@@ -125,7 +211,7 @@ $(document).ready(function () {
         },
       });
       if (i == 0) {
-        player.addEventListener('onReady', playFirst);
+        //player.addEventListener('onReady', playFirst);
       }
       players.push(player);
     }
