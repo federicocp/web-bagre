@@ -163,7 +163,7 @@ $(document).ready(function () {
   //CREATE VIDEOS
   var players = [];
   onYouTubeIframeAPIReady = function () {
-    console.log("YT API Ready")
+    console.log('YT API Ready');
     var playerVars = {
       autoplay: 0, // Auto-play the video on load
       autohide: 1, // Hide video controls when playing
@@ -174,7 +174,7 @@ $(document).ready(function () {
       loop: 1, // Run the video in a loop
       fs: 0, // Hide the full screen button
       rel: 0,
-      enablejsapi: 1
+      enablejsapi: 1,
       //start: 3000,
       //end: 4500
     };
