@@ -19,7 +19,6 @@ $(document).ready(function () {
   var reels = reel.length;
   var fp = $('#fullpage');
   for (var i = 0; i < reels; i++) {
-    /*
     fp.append(
       '<div class="section" id="section' +
         i +
@@ -31,11 +30,12 @@ $(document).ready(function () {
         '">' +
         '</div>'
     );
-    */
-    fp.append('<div class="section">Seccion '+i+'</div>')
+
+    //fp.append('<div class="section">Seccion '+i+'</div>')
   }
 
   // INIT FULLPAGE.JS
+  var lastSection = -1;
 
   fp.fullpage({
     // Navigation
@@ -48,8 +48,6 @@ $(document).ready(function () {
     showActiveTooltip: false,
     slidesNavigation: false,
     slidesNavPosition: 'bottom',
-
-    sectionsColor : ['#ccc', '#fff'],
 
     // Scrolling
     css3: true,
@@ -90,7 +88,7 @@ $(document).ready(function () {
       '<div class="fp-arrow"></div>',
     ],
     verticalCentered: true,
-    sectionsColor: ['#ccc', '#aaa','#fcd', '#h12',],
+    //sectionsColor: ['#ccc', '#aaa', '#fcd', '#h12'],
     //paddingTop: '3em',
     //paddingBottom: '10px',
     //fixedElements: '#header, .footer',
@@ -119,33 +117,29 @@ $(document).ready(function () {
     },
 
     // Events
-    beforeLeave: function (origin, destination, direction, trigger) {},
+    beforeLeave: function (origin, destination, direction, trigger) {
+      console.log(
+        'onLeave Orig:' + origin.index + '/ Dest:' + destination.index
+      );
+      players[origin.index].mute();
+      players[destination.index].playVideo();
+      players[destination.index].unMute();
+      lastSection = origin.index;
+    },
     onLeave: function (origin, destination, direction, trigger) {},
-    afterLoad: function (origin, destination, direction, trigger) {},
+    afterLoad: function (origin, destination, direction, trigger) {
+      console.log('afterload:' + destination.index + ' ls:' + lastSection);
+      //players[origin.index].pauseVideo();
+    },
     afterRender: function () {},
     afterResize: function (width, height) {},
     afterReBuild: function () {},
     afterResponsive: function (isResponsive) {},
-    afterSlideLoad: function (
-      section,
-      origin,
-      destination,
-      direction,
-      trigger
-    ) {},
-    onSlideLeave: function (
-      section,
-      origin,
-      destination,
-      direction,
-      trigger
-    ) {},
     onScrollOverflow: function (section, slide, position, direction) {},
   });
 
   //init PP
   /*
-  var lastSection = -1;
   pp.pagepiling({
     //events
     onLeave: function (index, nextIndex, direction) {
@@ -168,7 +162,8 @@ $(document).ready(function () {
 
   //CREATE VIDEOS
   var players = [];
-  _onYouTubeIframeAPIReady = function () {
+  onYouTubeIframeAPIReady = function () {
+    console.log("YT API Ready")
     var playerVars = {
       autoplay: 0, // Auto-play the video on load
       autohide: 1, // Hide video controls when playing
@@ -179,9 +174,9 @@ $(document).ready(function () {
       loop: 1, // Run the video in a loop
       fs: 0, // Hide the full screen button
       rel: 0,
-      enablejsapi: 0,
-      start: 300,
-      end: 350
+      enablejsapi: 1
+      //start: 3000,
+      //end: 4500
     };
 
     for (var i = 0; i < reels; i++) {
@@ -196,7 +191,7 @@ $(document).ready(function () {
           onReady: function (e) {
             //e.target.pauseVideo();
             e.target.seekTo(300);
-            e.target.mute()
+            e.target.mute();
           },
           onStateChange: function (e) {
             if (e.data === YT.PlayerState.PLAYING) {
@@ -210,9 +205,6 @@ $(document).ready(function () {
           },
         },
       });
-      if (i == 0) {
-        //player.addEventListener('onReady', playFirst);
-      }
       players.push(player);
     }
   };
